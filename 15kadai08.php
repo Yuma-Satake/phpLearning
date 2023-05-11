@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>今日の運勢</title>
-</head>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>おみくじ</title>
+  </head>
+</html>
 <body>
-    <h1>おみくじ1回1000円</h1>
+  <h1>おみくじ</h1>
+  <p>おみくじの結果は...</p>
     <?php
-        $omikuji = rand(1, 3);
-        if ($omikuji == 1) {
-            echo "<p>大吉</p>";
-        } elseif ($omikuji == 2) {
-            echo "<p>中吉</p>";
-        } else {
-            echo "<p>凶</p>";
-        }
+        $omikuji = array("大吉", "中吉", "小吉", "吉", "凶", "大凶");
+        $result = $omikuji[rand(0, count($omikuji) - 1)];
+        echo "<h2>" . $result . "</h2>";
     ?>
 </body>
-</html>

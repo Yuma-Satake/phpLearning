@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>おみくじ</title>
+  </head>
+</html>
+<body style="text-align: center">
+  <h1 style="margin-top: 100px">おみくじ</h1>
+  <button>おみくじを引く</button>
+  <script>
+    "use strict";
+    const btn = document.querySelector("button");
+    const h2 = document.querySelector("h2");
+    const results = ["大吉", "中吉", "小吉", "凶"];
+    btn.addEventListener("click", () => {
+      const n = Math.floor(Math.random() * results.length);
+      btn.textContent = results[n];
+      h2.textContent = results[n];
+    });
+  </script>
+</body>
