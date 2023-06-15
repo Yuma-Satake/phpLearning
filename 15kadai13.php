@@ -3,41 +3,38 @@
 <head>
     <title>好きな商品を入力するといい</title>
     <?php
-        // POSTで来たかどうか
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // DB接続
-            $mysqli = new mysqli('localhost', 'username', 'password', 'myFirstDB');
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $host = 'your_host';
+            $dbname = 'your_db_name';
+            $username = 'your_username';
+            $password = 'your_password';
 
-            if ($mysqli->connect_error) {
-                echo "DB接続に失敗しました: " . $mysqli->connect_error;
-                exit();
+            try {
+                $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $newCode = $_POST['newCode'];
+                $newName = $_POST['newName'];
+                $newPrice = $_POST['newPrice'];
+
+                $stmt = $pdo->prepare("INSERT INTO ChuukamanTBL (code, name, price) VALUES (:newCode, :newName, :newPrice)");
+                $stmt->bindParam(':newCode', $newCode);
+                $stmt->bindParam(':newName', $newName);
+                $stmt->bindParam(':newPrice', $newPrice);
+                $stmt->execute();
+
+                echo "<p>商品が追加されました。</p>";
+
+                // New product verification
+                $stmt = $pdo->prepare("SELECT * FROM ChuukamanTBL WHERE code = :newCode");
+                $stmt->bindParam(':newCode', $newCode);
+                $stmt->execute();
+                $product = $stmt->fetch();
+
+                echo "<p>新しい商品: コード - {$product['code']}, 名前 - {$product['name']}, 価格 - {$product['price']} </p>";
+            } catch(PDOException $e) {
+                echo "<p>エラー: " . $e->getMessage() . "</p>";
             }
-            
-            // 新商品情報
-            $newCode = $mysqli->real_escape_string($_POST["newCode"]);
-            $newName = $mysqli->real_escape_string($_POST["newName"]);
-            $newPrice = $mysqli->real_escape_string($_POST["newPrice"]);
-
-            // DML発行
-            $query = "INSERT INTO ChuukamanTBL (code, name, price) VALUES ('$newCode', '$newName', '$newPrice')";
-            if (!$mysqli->query($query)) {
-                echo "商品の追加に失敗しました: " . $mysqli->error;
-                exit();
-            }
-
-            // インサートできたかを確認するためSELECT文発行
-            $query = "SELECT * FROM ChuukamanTBL WHERE code = '$newCode'";
-            $result = $mysqli->query($query);
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<p>新商品情報: 商品コード - {$row['code']}, 商品名 - {$row['name']}, 価格 - {$row['price']}円</p>";
-                }
-            } else {
-                echo "新商品情報の取得に失敗しました";
-            }
-
-            $mysqli->close();
         }
     ?>
 </head>
