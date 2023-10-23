@@ -17,7 +17,7 @@
     <div class="containercontainer bg-warning-subtle border border-3 border-primary">
       <div class="row border border-3 border-secondary">
         <!-- navbar -->
-        <?php readfile('./navbar.html') ?>
+        <?php readfile('./../navbar.html') ?>
       </div>
       <div class="row border border-3 border-secondary">
         <!-- header -->
