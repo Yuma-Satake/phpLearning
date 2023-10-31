@@ -1,4 +1,5 @@
 <?php
+include('../dbfunc.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $odata = [
@@ -109,8 +110,8 @@ foreach ($dates as $d) {
                 </tbody>
             </table>
         </div>
-        <div class="row border border-3 border-info"><!-- フッター -->
-            <?php readfile('../footer.html'); ?>
+        <div class="row">
+            <div class="col-12"> (c) We are Unknown Fried Pan!!</div>
         </div>
     </div>
     <!-- Bootstrap JavaScriptの読み込み -->
